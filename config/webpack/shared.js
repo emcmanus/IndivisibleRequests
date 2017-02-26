@@ -29,6 +29,7 @@ config = {
         loader: 'babel-loader',
         options: {
           presets: [
+            'react',
             [ 'latest', { 'es2015': { 'modules': false } } ]
           ]
         }
