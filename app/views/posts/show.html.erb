@@ -1,24 +1,28 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-md-12">
 
-<p>
-  <strong>Title:</strong>
-  <%= @post.title %>
-</p>
+    <h1>
+      <%= @post.title %>
+      <% if @post.user == current_user %>
+        <%= link_to 'Edit', edit_post_path(@post), class: "small" %>
+      <% end %>
+    </h1>
 
-<p>
-  <strong>Body:</strong>
-  <%= @post.body %>
-</p>
+    <p>
+      <%= link_to 'Back', posts_path %>
+    </p>
 
-<p>
-  <strong>User:</strong>
-  <%= @post.user %>
-</p>
 
-<p>
-  <strong>View count:</strong>
-  <%= @post.view_count %>
-</p>
+    <div class="well well-lg">
+      <%= @post.body %>
+    </div>
 
-<%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %>
+    <p>
+      <%= @post.user.username %>,
+      <%= pluralize @post.view_count, "view" %>,
+      <%= time_ago_in_words @post.created_at %> ago
+    </p>
+
+
+  </div>
+</div>
