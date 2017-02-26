@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :followed_posts, class_name: 'Post', through: :follows
   has_many :follows,    dependent: :destroy
   has_many :posts,      dependent: :destroy
+  has_many :comments,   dependent: :destroy
 
   # Don't let username be an email! (for ambiguity when logging in)
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true

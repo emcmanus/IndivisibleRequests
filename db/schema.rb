@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170226232233) do
+ActiveRecord::Schema.define(version: 20170226234550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comments", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "post_id"
+    t.text     "body"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_comments_on_deleted_at", using: :btree
+    t.index ["post_id"], name: "index_comments_on_post_id", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
+  end
 
   create_table "follows", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -30,10 +42,11 @@ ActiveRecord::Schema.define(version: 20170226232233) do
     t.text     "body"
     t.integer  "user_id"
     t.integer  "view_count"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.datetime "deleted_at"
-    t.integer  "follows_count", default: 0
+    t.integer  "follows_count",  default: 0
+    t.integer  "comments_count", default: 0
     t.index ["deleted_at"], name: "index_posts_on_deleted_at", using: :btree
     t.index ["user_id"], name: "index_posts_on_user_id", using: :btree
   end
@@ -60,6 +73,8 @@ ActiveRecord::Schema.define(version: 20170226232233) do
     t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
   end
 
+  add_foreign_key "comments", "posts"
+  add_foreign_key "comments", "users"
   add_foreign_key "follows", "posts"
   add_foreign_key "follows", "users"
   add_foreign_key "posts", "users"

@@ -1,8 +1,11 @@
 class Post < ApplicationRecord
   acts_as_paranoid
   belongs_to :user
+
   has_many :followers,  class_name: 'User', through: :follows
+
   has_many :follows,    dependent: :destroy
+  has_many :comments,   dependent: :destory
 
   default_scope { order('created_at DESC') }
 
