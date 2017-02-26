@@ -5,6 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'twitter-bootswatch-rails-helpers' # Only using alert helper, don't need bootswatch gem
 gem "paranoia", "~> 2.2"
 gem 'foreman'
 gem 'webpacker', github: 'rails/webpacker'
