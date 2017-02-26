@@ -10,7 +10,7 @@ class PostsController < ApplicationController
 
   def unfollow
     @post = Post.find(params[:post_id])
-    current_user.follows.where(post: @post).first.destroy
+    current_user.follows.where(post: @post).first.really_destroy!
     redirect_to @post, notice: 'You unfollowed this request.'
   end
 
