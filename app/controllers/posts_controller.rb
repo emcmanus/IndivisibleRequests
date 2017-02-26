@@ -1,6 +1,18 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:edit, :update, :destroy]
   skip_before_action :authenticate_user!, only: [:index, :show]
+  before_action :set_post,                only: [:edit, :update, :destroy]
+
+  def follow
+    @post = Post.find(params[:post_id])
+    current_user.follows.create!(post: @post)
+    redirect_to @post, notice: 'You are now following this request.'
+  end
+
+  def unfollow
+    @post = Post.find(params[:post_id])
+    current_user.follows.where(post: @post).first.destroy
+    redirect_to @post, notice: 'You unfollowed this request.'
+  end
 
   def index
     @posts = Post.all

@@ -23,6 +23,7 @@
           <h3><%= link_to post.title, post %></h3>
           <%= post.user.username %>,
           <%= pluralize post.view_count, "view" %>,
+          <%= pluralize post.follows_count, "follower" %>,
           <%= time_ago_in_words post.created_at %> ago
         </div>
       </div>
