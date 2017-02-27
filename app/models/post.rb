@@ -5,7 +5,7 @@ class Post < ApplicationRecord
   has_many :followers,  class_name: 'User', through: :follows
 
   has_many :follows,    dependent: :destroy
-  has_many :comments,   dependent: :destory
+  has_many :comments,   dependent: :destroy
 
   default_scope { order('created_at DESC') }
 

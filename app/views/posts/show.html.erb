@@ -22,21 +22,58 @@
     </div>
 
     <p>
-      <%= @post.user.username %>,
+      by <%= @post.user.username %>,
       <%= pluralize @post.view_count, "view" %>,
       <%= pluralize @post.follows_count, "follower" %>,
       <%= time_ago_in_words @post.created_at %> ago
     </p>
 
-    <% if @post.has_follower?(current_user) %>
-      <%= link_to(post_follow_path(@post), :method => :delete, class: "btn btn-default") do %>
-        <span class="glyphicon glyphicon-eye-close"></span> Unfollow
-      <% end %>
-    <% else %>
-      <%= link_to(post_follow_path(@post), :method => :post, class: "btn btn-default") do %>
-        <span class="glyphicon glyphicon-eye-open"></span> Follow
-      <% end %>
+    <p>&nbsp;</p>
+
+    <div class="row">
+      <div class="col-md-10">
+        <h3> Comments <small>(<%= @post.comments_count %>)</small> </h3>
+      </div>
+      <div class="col-md-2 text-right" style="padding-top: 15px;">
+        <% if @post.has_follower?(current_user) %>
+          <%= link_to(post_follow_path(@post), :method => :delete, class: "btn btn-default") do %>
+            <span class="glyphicon glyphicon-eye-close"></span> Unfollow
+          <% end %>
+        <% else %>
+          <%= link_to(post_follow_path(@post), :method => :post, class: "btn btn-default") do %>
+            <span class="glyphicon glyphicon-eye-open"></span> Follow
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @post.comments.present? %>
+    <hr />
     <% end %>
 
+    <% for comment in @post.comments %>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading"><%= comment.user.username %>, <%= time_ago_in_words comment.created_at %> ago</div>
+            <div class="panel-body">
+              <%= comment.body %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <hr />
+
+    <% if user_signed_in? %>
+      <%= simple_form_for(Comment.new, url: post_comments_path(post_id: @post.id), html: { class: 'form-vertical' }) do |f| %>
+        <%= f.input :body, label: false, placeholder: 'Add a comment' %>
+        <%= f.submit "Comment", class: 'btn btn-default' %>
+      <% end %>
+    <% else %>
+      <%= link_to "Sign in to comment", new_user_session_path, class: 'btn btn-default btn-lg' %><br/>
+      <span> Or <%= link_to "sign up", new_user_registration_path %> to join the conversation. </span>
+    <% end %>
   </div>
 </div>
